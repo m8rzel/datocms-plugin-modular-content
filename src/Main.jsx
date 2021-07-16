@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './style.sass';
 import $ from 'jquery'  
+import JoditEditor from "jodit-react";
 export default class Main extends Component {
   constructor(props){
     super(props)
@@ -19,10 +20,22 @@ export default class Main extends Component {
     const createFields = (id, fieldContent) => {
       if(fieldContent.field_type === 'string'){
         console.log("Created text field")
-        return(<><p className="label">{fieldContent.label}</p><p className="apiKey">{fieldContent.api_key}</p><input onChange={(e) => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value} className="default-input" type='text' placeholder={fieldContent.label}></input></>)
+        return(
+          <>
+            <p className="label">{fieldContent.label}</p>
+            <p className="apiKey">{fieldContent.api_key}</p>
+            <input onChange={(e) => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value} className="default-input" type='text' placeholder={fieldContent.label}></input>
+          </>
+        )
       }
       if(fieldContent.field_type === 'text'){
-        return(<><p className="label">{fieldContent.label}</p><p className="apiKey">{fieldContent.api_key}</p><textarea value={fieldContent.value} className="default-input" placeholder={fieldContent.label}></textarea></>)
+        return(
+          <>
+            <p className="label">{fieldContent.label}</p>
+            <p className="apiKey">{fieldContent.api_key}</p>
+            <textarea value={fieldContent.value} className="default-input" placeholder={fieldContent.label} onChange={(e) => handleInputChange(id, e.target.value, fieldContent.api_key)}></textarea>
+          </>
+        )
       }
       if(fieldContent.field_type === 'file'){
         return(
