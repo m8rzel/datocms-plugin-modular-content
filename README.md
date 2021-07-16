@@ -1,6 +1,6 @@
 # Modular Content DatoCMS plugin
 
-Modular Content in DatoCMS Modular Content
+Modular Content in DatoCMS Modular Content is now really easy
 
 ## Configuration
 

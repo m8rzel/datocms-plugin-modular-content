@@ -6,11 +6,12 @@ export default class Main extends Component {
     super(props)
     this.state = {
       allContent: [],
+      links: [],
     }
   }
   componentDidMount(){
     if(this.props.fieldValue !== null) {
-      this.setState({allContent: JSON.parse(this.props.fieldValue)})
+      this.setState({allContent: JSON.parse(this.props.fieldValue), links: []})
     }
   }
   render() {
@@ -18,11 +19,11 @@ export default class Main extends Component {
     const modularBlocksArray = modularBlocks.split(",");
     const createFields = (id, fieldContent) => {
       if(fieldContent.field_type === 'string'){
-        console.log("Created text field")
+        //console.log("Created text field")
         return(<><p className="label">{fieldContent.label}</p><p className="apiKey">{fieldContent.api_key}</p><input onChange={(e) => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value} className="default-input" type='text' placeholder={fieldContent.label}></input></>)
       }
       if(fieldContent.field_type === 'text'){
-        return(<><p className="label">{fieldContent.label}</p><p className="apiKey">{fieldContent.api_key}</p><textarea value={fieldContent.value} className="default-input" placeholder={fieldContent.label}></textarea></>)
+        return(<><p className="label">{fieldContent.label}</p><p className="apiKey">{fieldContent.api_key}</p><textarea onChange={(e) => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value} className="default-input" placeholder={fieldContent.label}></textarea></>)
       }
       if(fieldContent.field_type === 'file'){
         return(
@@ -39,6 +40,42 @@ export default class Main extends Component {
           </>
         )
       }
+      if(fieldContent.field_type === 'links'){
+        return(
+          <>
+            <p className="label">{fieldContent.label}</p>
+            <p className="apiKey">{fieldContent.api_key}</p>  
+            <ul className="input-links" onClick={() => selectLinks(fieldContent.links[0])}>
+              {
+                this.state.links.map((link, i) => {
+                  return(<li>{link.id}</li>)
+                })
+              }
+            </ul>
+          </>
+
+        )
+      }
+    }
+    const handleLinks = (item) => {
+      const newLinks = this.state.links;
+      newLinks.push(item);
+      console.log("Newslinks", newLinks);
+      this.setState({links: newLinks}, () => {
+        console.log("links saved", this.state.links[0])
+      })
+    }
+    const selectLinks = (id) => {
+      console.log("ID", id)
+      plugin.selectItem(id)
+        .then(function(item) {
+          if (item) {
+            console.log('Item selected: ', item.id);
+            handleLinks(item)
+          } else {
+            console.log('Modal closed!');
+          }
+        });
     }
     const setFieldValueJSON = (newContentArray) => {
       this.setState({allContent: newContentArray}, () => {
@@ -56,10 +93,10 @@ export default class Main extends Component {
       plugin.selectUpload()
         .then(function(upload) {
           if (upload) {
-            console.log('Upload selected: ', upload);
+            //console.log('Upload selected: ', upload);
             handleInputChange(id, upload.attributes.url, apiKey)
           } else {
-            console.log('Modal closed!');
+            //console.log('Modal closed!');
           }
         });
     }
@@ -71,13 +108,14 @@ export default class Main extends Component {
       var newFieldArray = fieldArray.map(field => {
         if(field.type === 'field'){
           const fieldContent = plugin.fields[field.id].attributes;
-          return({field_type: fieldContent.field_type, label: fieldContent.label, api_key: fieldContent.api_key, value: ''})
+          console.log("Field", fieldContent)
+          return({field_type: fieldContent.field_type, label: fieldContent.label, api_key: fieldContent.api_key, value: '', links: fieldContent.field_type === 'links' && fieldContent.validators.items_item_type.item_types})
         }
       })
       var newContent = this.state.allContent;
-      newContent.push({'id': Date.now(), 'name': contentName, 'fields': newFieldArray, 'api_key': contentApiKey});
+      newContent.push({'id': Date.now(), 'name': contentName, 'fields': newFieldArray, 'api_key': contentApiKey,});
       this.setState({allContent: newContent}, () => {
-        console.log("Neu Content", this.state.allContent)
+        //console.log("Neu Content", this.state.allContent)
       })
       //console.log("Model Click", plugin.itemTypes[modelID].relationships.fields.data)
     }
@@ -123,7 +161,7 @@ export default class Main extends Component {
                 <svg className="arrow" id={`arrow-${i}`} viewBox="0 0 512 512"  xmlns="http://www.w3.org/2000/svg"><path d="M98.9,184.7l1.8,2.1l136,156.5c4.6,5.3,11.5,8.6,19.2,8.6c7.7,0,14.6-3.4,19.2-8.6L411,187.1l2.3-2.6  c1.7-2.5,2.7-5.5,2.7-8.7c0-8.7-7.4-15.8-16.6-15.8v0H112.6v0c-9.2,0-16.6,7.1-16.6,15.8C96,179.1,97.1,182.2,98.9,184.7z"/></svg>
                 <h5 onClick={() => handleCollapseExpand(i)}>{content.name}</h5>
                 <svg onClick={() => toggleMenu(i, true)} className="dots" viewBox="0 0 192 512" width="1em" height="1em"><path d="M96 184c39.8 0 72 32.2 72 72s-32.2 72-72 72-72-32.2-72-72 32.2-72 72-72zM24 80c0 39.8 32.2 72 72 72s72-32.2 72-72S135.8 8 96 8 24 40.2 24 80zm0 352c0 39.8 32.2 72 72 72s72-32.2 72-72-32.2-72-72-72-72 32.2-72 72z"></path></svg>
-                <ul className="dots-options" id={`dots-options-${i}`} onMouseLeave={() => toggleMenu(0, false)}>
+                <ul className="dots-options" id={`dots-options-${i}`} onMouseLeave={() => toggleMenu(i, false)}>
                   <li>Nach Oben</li>
                   <li>Nach Unten</li>
                   <li style={{color: 'red'}} onClick={() => deleteContent(i, content.id)}>Löschen</li>
@@ -152,7 +190,7 @@ export default class Main extends Component {
           </ul>
           <div className="modelChooseBtn" onClick={() => showModelMenu(true)}>
             <svg viewBox="0 0 448 512" width="1em" height="1em"><path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
-            <p>Neu anlegen</p>
+            <p>Neu anlegen...</p>
           </div>
       </div>
       </>
