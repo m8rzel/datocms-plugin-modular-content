@@ -2,11 +2,16 @@
   background: white
   padding: 24px
 
+.content-container:hover
+  border-color: #848484
 .content-container
   position: relative
   border: 1px solid #f0f0f0
   border-radius: 4px
   margin: 10px 0
+  height: 40px
+  .content-fields
+    display: none
 
   h5
     width: 100%
@@ -14,31 +19,36 @@
     height: 40px
     align-items: center
     display: flex
-    padding-left: 10px
+    padding-left: 40px
     box-sizing: border-box
     font-weight: 500
     font-size: .875rem
     color: #848484
+    cursor: pointer
 
-  input
+  input, div
     margin: 0 15px 20px 15px
     width: calc(100% - 30px)
 
   input::placeholder
-    color: #c6c6c6  
+    color: #c6c6c6
+
   textarea::placeholder
-    color: #c6c6c6  
+    color: #c6c6c6
+
   textarea  
     margin: 0 15px 20px 15px
     width: calc(100% - 30px)
   p
     margin-top: 10px
     color: #848484
-  svg
+  .dots
     position: absolute
     top: 13px
     right: 8px
     cursor: pointer 
+    path
+      fill: #848484;
   .label
     font-size: 13px
     margin-left: 15px
@@ -50,3 +60,70 @@
     font-size: 12px
     margin-right: 15px
     font-family: Roboto Mono,Menlo,Bitstream Vera Sans Mono,Consolas,Courier,monospace
+  .image-upload
+    border: 1px solid #f0f0f0
+    margin-top: 51px
+    height: 181px
+    justify-content: center
+    align-items: center
+    display: flex
+    img
+      height: 86%
+      width: auto
+      object-fit: contain
+.arrow
+  width: 17px
+  position: absolute
+  left: 8px
+  top: 12px
+  transform: rotate(-90deg)
+  path
+    fill: #848484;
+.dots-options
+  z-index: 9999
+  display: none
+  width: max-content
+  position: absolute
+  right: 0
+  background: white
+  padding: 20px 10px
+  border: 1px solid #848484
+  border-radius: 3px
+  li
+    padding: 10px
+    cursor: pointer
+.modelContainer
+  position: relative
+.modelChoose
+  z-index: 9999
+  display: none
+  width: max-content
+  position: absolute
+  left: 0
+  bottom: 48px
+  background: white
+  padding: 20px 10px
+  border: 1px solid #848484
+  border-radius: 3px
+  li
+    padding: 3px
+    cursor: pointer
+  li:hover
+    background: #f0f0f0  
+.modelChooseBtn
+  cursor: pointer
+  width: max-content
+  height: 41px
+  background: #cecece
+  align-items: center
+  display: flex
+  border-radius: 3px
+  padding: 0 10px
+  svg
+    path
+      fill: #589ef0
+  p
+    margin-left: 11px
+    margin-right: 5px
+    font-weight: 500
+    color: #589ef0
