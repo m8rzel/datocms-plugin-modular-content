@@ -7,6 +7,7 @@ export default class Main extends Component {
     this.state = {
       allContent: [],
       links: [],
+      formatedContent: [],
     }
   }
   componentDidMount(){
