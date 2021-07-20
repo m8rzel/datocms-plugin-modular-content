@@ -5,6 +5,7 @@ With this Plugin you can use your Blocks Models in other Blocks. So it´s a Plug
 ## Screenshots
 
 ![alt text](./docs/screenshot1.png)
+
 Here you can add the Block IDs you want to be able to use.
 
 ## NPM Package
