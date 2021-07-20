@@ -1,10 +1,10 @@
 # Modular Content DatoCMS plugin
 
-Modular Content in DatoCMS Modular Content is now really easy
+With this Plugin you can use your Blocks Models in other Blocks. So it´s a Plugin for nested Content. The Content you can use can be set in Field Settings if you´re my the Field Editor.
 
-## Configuration
+## Screenshots
 
-[Describe/screenshot any global/instance parameters this plugin requires]
+![alt text](./docs/screenshot1.png)
 
 ## Development
 
