@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import './style.sass';
-<<<<<<< HEAD
 import $ from 'jquery'  
+import 'jodit';
+import 'jodit/build/jodit.min.css';
 import JoditEditor from "jodit-react";
-=======
-import $ from 'jquery';
-
->>>>>>> newContent
 export default class Main extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +13,15 @@ export default class Main extends Component {
       formattedContent: [],
     };
   }
+  updateContent = (value) => {
+    this.setState({content:value})
+  }
+  jodit;
+    setRef = jodit => this.jodit = jodit;
+    
+    config = {
+      readonly: false // all options from https://xdsoft.net/jodit/doc/
+    }
 
   componentDidMount() {
     if (this.props.fieldValue !== null) {
@@ -78,7 +84,7 @@ export default class Main extends Component {
                 <p className="label">{fieldContent.label}</p>
                 <p className="apiKey">{fieldContent.api_key}</p>
               </section>
-              <select name="ab" onChange={e => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value}>
+              <select className="default-input" onChange={e => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value}>
                   {fieldContent.validators.map(option => {
                     if(fieldContent.value === option){
                       return(<option selected value={option}>{option}</option>)
@@ -109,8 +115,16 @@ export default class Main extends Component {
             <section className="label-key">
                   <p className="label">{fieldContent.label}</p>
                   <p className="apiKey">{fieldContent.api_key}</p>
-              </section>
-            <textarea onChange={e => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value} className="default-input" placeholder={fieldContent.label} />
+            </section>
+            <div className="default-input">
+            <JoditEditor
+            	  editorRef={this.setRef}
+                value={fieldContent.value}
+                tabIndex={1} // tabIndex of textarea
+                config={this.config}
+                onChange={(newContent) => handleInputChange(id, newContent, fieldContent.api_key)}
+            />
+            </div>
           </>
         );
       }
@@ -121,11 +135,17 @@ export default class Main extends Component {
               <p className="label">{fieldContent.label}</p>
               <p className="apiKey">{fieldContent.api_key}</p>
             </section>
-            <div className="image-upload" onClick={() => selectUploadFile(id, fieldContent.api_key)}>
+            <div className={`image-upload ${fieldContent.value !== '' ? 'image-upload-selected' : ''}`} onClick={() => selectUploadFile(id, fieldContent.api_key)}>
               {
                 fieldContent.value === ''
                   ? <p>Mediendatei auswählen</p>
-                  : <img src={fieldContent.value} />
+                  : <>
+                      <img src={fieldContent.value} />
+                      <div className="image-options">
+                        <p onClick={() => deleteImage(id, fieldContent.api_key)}>Löschen oder ersetzen</p>
+                      </div>
+                    </>
+
               }
             </div>
           </>
@@ -144,12 +164,14 @@ export default class Main extends Component {
             </section>
             <ul className="input-links" onClick={() => selectLinks(id, fieldContent.api_key, fieldContent.links[0])}>
               {
-                this.state.formattedContent.length > 0 && this.state.formattedContent[this.state.formattedContent.findIndex(content => content.id === id)].fields[fieldContent.api_key].map(link => (
+                this.state.formattedContent.length > 0 && this.state.formattedContent[this.state.formattedContent.findIndex(content => content.id === id)].fields[fieldContent.api_key].map(link => {
+                  return(
                   <li>
                     <p onClick={() => editLinks(link.id)}>{link.displayName}</p>
-                    <svg onClick={() => deleteLinks(id, fieldContent.api_key, fieldContent.links[0], link.id)} height="14" width="14" viewBox="0 0 20 20" aria-hidden="true" focusable="false" className="css-19bqh2r"><path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z" /></svg>
+                    <svg onClick={() => deleteLinks(id, fieldContent.api_key, link.id)} height="14" width="14" viewBox="0 0 20 20" aria-hidden="true" focusable="false" className="css-19bqh2r"><path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z" /></svg>
                   </li>
-                ))
+                )
+                })
               }
             </ul>
           </>
@@ -157,14 +179,23 @@ export default class Main extends Component {
         );
       }
     };
+
+    const deleteImage = (id, fieldAPIKey) => {
+      handleInputChange(id, '', fieldAPIKey);
+    }
     const deleteLinks = (id, fieldAPIKey, currentItemId) => {
+      console.log("CurrentItem", currentItemId)
       $('.input-links li svg').on('click', (event) => {
         event.stopPropagation();
       });
       const newLinks = this.state.formattedContent[this.state.formattedContent.findIndex(content => content.id === id)].fields[fieldAPIKey];
       const currentIndex = newLinks.findIndex(content => content.id === currentItemId);
-      newLinks.splice(currentIndex, 1);
-      handleInputChange(id, newLinks, fieldAPIKey);
+      //newLinks.splice(currentIndex, 1);
+      const withoutDeletedLinks = newLinks.filter(function(item) {
+        return item.id !== currentItemId
+      })
+      console.log("Without deleted", withoutDeletedLinks)
+      handleInputChange(id, withoutDeletedLinks, fieldAPIKey);
     };
     const editLinks = (id) => {
       plugin.editItem(id)
@@ -318,7 +349,7 @@ export default class Main extends Component {
     return (
       <>
         <div className="container">
-          {this.state.allContent.length !== 0 && this.state.allContent.length === this.state.formattedContent.length
+          {this.state.allContent.length !== 0 && this.state.formattedContent.length &&  this.state.allContent.length === this.state.formattedContent.length
           && this.state.allContent.map((content, i) => (
             <div id={`content-${i}`} className="content-container">
               <svg className="arrow" id={`arrow-${i}`} viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M98.9,184.7l1.8,2.1l136,156.5c4.6,5.3,11.5,8.6,19.2,8.6c7.7,0,14.6-3.4,19.2-8.6L411,187.1l2.3-2.6  c1.7-2.5,2.7-5.5,2.7-8.7c0-8.7-7.4-15.8-16.6-15.8v0H112.6v0c-9.2,0-16.6,7.1-16.6,15.8C96,179.1,97.1,182.2,98.9,184.7z" /></svg>
