@@ -40,7 +40,11 @@ export default class Main extends Component {
               const fieldContent = plugin.fields[field.id].attributes;
               // console.log("Field", content.fields[fieldContent.api_key])
               return ({
-                field_type: fieldContent.field_type, label: fieldContent.label, api_key: fieldContent.api_key, value: content.fields[fieldContent.api_key], links: fieldContent.field_type === 'links' && fieldContent.validators.items_item_type.item_types,
+                field_type: fieldContent.field_type, 
+                label: fieldContent.label, api_key: fieldContent.api_key, 
+                value: content.fields[fieldContent.api_key], 
+                links: fieldContent.field_type === 'links' && fieldContent.validators.items_item_type.item_types,
+                validators: fieldContent.field_type === 'string' && fieldContent.validators && fieldContent.validators.enum && fieldContent.validators.enum.values && fieldContent.validators.enum.values,
               });
             }
           });
@@ -62,20 +66,45 @@ export default class Main extends Component {
     const createFields = (id, fieldContent) => {
       if (fieldContent.field_type === 'string') {
         // console.log("Created text field", fieldContent)
-        return (
-          <>
-            <p className="label">{fieldContent.label}</p>
-            <p className="apiKey">{fieldContent.api_key}</p>
-            <input onChange={e => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value} className="default-input" type="text" placeholder={fieldContent.label} />
-          </>
-        );
+        if(fieldContent.validators){
+          return(
+            <>
+              <section className="label-key">
+                <p className="label">{fieldContent.label}</p>
+                <p className="apiKey">{fieldContent.api_key}</p>
+              </section>
+              <select name="ab" onChange={e => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value}>
+                  {fieldContent.validators.map(option => {
+                    if(fieldContent.value === option){
+                      return(<option selected value={option}>{option}</option>)
+                    } else{
+                      return(<option value={option}>{option}</option>)
+                    }
+                  })
+                  }
+              </select>
+            </>
+          );
+        } else{
+            return (
+              <>
+                <section className="label-key">
+                  <p className="label">{fieldContent.label}</p>
+                  <p className="apiKey">{fieldContent.api_key}</p>
+                </section>
+                <input onChange={e => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value} className="default-input" type="text" placeholder={fieldContent.label} />
+              </>
+            );
+        }
       }
 
       if (fieldContent.field_type === 'text') {
         return (
           <>
-            <p className="label">{fieldContent.label}</p>
-            <p className="apiKey">{fieldContent.api_key}</p>
+            <section className="label-key">
+                  <p className="label">{fieldContent.label}</p>
+                  <p className="apiKey">{fieldContent.api_key}</p>
+              </section>
             <textarea onChange={e => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value} className="default-input" placeholder={fieldContent.label} />
           </>
         );
@@ -83,8 +112,10 @@ export default class Main extends Component {
       if (fieldContent.field_type === 'file') {
         return (
           <>
-            <p className="label">{fieldContent.label}</p>
-            <p className="apiKey">{fieldContent.api_key}</p>
+            <section className="label-key">
+              <p className="label">{fieldContent.label}</p>
+              <p className="apiKey">{fieldContent.api_key}</p>
+            </section>
             <div className="image-upload" onClick={() => selectUploadFile(id, fieldContent.api_key)}>
               {
                 fieldContent.value === ''
@@ -102,8 +133,10 @@ export default class Main extends Component {
         // console.log("Content", this.state.formattedContent)
         return (
           <>
-            <p className="label">{fieldContent.label}</p>
-            <p className="apiKey">{fieldContent.api_key}</p>
+            <section className="label-key">
+                <p className="label">{fieldContent.label}</p>
+                <p className="apiKey">{fieldContent.api_key}</p>
+            </section>
             <ul className="input-links" onClick={() => selectLinks(id, fieldContent.api_key, fieldContent.links[0])}>
               {
                 this.state.formattedContent.length > 0 && this.state.formattedContent[this.state.formattedContent.findIndex(content => content.id === id)].fields[fieldContent.api_key].map(link => (
@@ -208,9 +241,13 @@ export default class Main extends Component {
       const newFieldArray = fieldArray.map((field) => {
         if (field.type === 'field') {
           const fieldContent = plugin.fields[field.id].attributes;
-          // console.log("Field", fieldContent)
+          console.log("Field", fieldContent)
           return ({
-            field_type: fieldContent.field_type, label: fieldContent.label, api_key: fieldContent.api_key, value: fieldContent.field_type === 'links' ? [] : '', links: fieldContent.field_type === 'links' && fieldContent.validators.items_item_type.item_types,
+            field_type: fieldContent.field_type, label: fieldContent.label, 
+            api_key: fieldContent.api_key, 
+            value: fieldContent.field_type === 'links' ? [] : (fieldContent.default_value ? fieldContent.default_value : ''), 
+            links: fieldContent.field_type === 'links' && fieldContent.validators.items_item_type.item_types,
+            validators: fieldContent.field_type === 'string' && fieldContent.validators && fieldContent.validators.enum && fieldContent.validators.enum.values && fieldContent.validators.enum.values,
           });
         }
       });
