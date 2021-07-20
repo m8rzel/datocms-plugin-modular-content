@@ -1,6 +1,6 @@
 .container
   background: white
-  padding: 24px
+  padding-bottom: 24px
 
 .content-container:hover
   border-color: #848484
@@ -13,6 +13,12 @@
   .content-fields
     display: none
 
+  .label-key
+    width: 100%
+    height: 30px
+    margin-bottom: 6px
+    &:hover .apiKey
+      display: flex
   h5
     width: 100%
     background: whitesmoke
@@ -25,20 +31,73 @@
     font-size: .875rem
     color: #848484
     cursor: pointer
+  .input-links
+    width: calc(100% - 30px)
+    height: 40px
+    border: 1px solid #f0f0f0
+    margin: 53px 15px 10px 15px
+    box-sizing: border-box
+    overflow: scroll
+    display: flex
+    flex-wrap: wrap
+    li
+      list-style-type: none
+      word-break: keep-all
+      white-space: nowrap
+      border-radius: 3px
+      margin: 5px
+      height: auto
+      box-sizing: border-box
+      background: #cecece
+      width: max-content
+      cursor: pointer
+      padding: 0 0 0 0.7rem
+      justify-content: center
+      align-items: center
+      display: flex
+      color: black
+      overflow: hidden
+      p
+        float: left
+        color: black
+        margin: 0
+        padding-right: 9px
+        &:hover
+          text-decoration: underline
+      svg
+        padding-right: 2px
+        padding-left: 2px
+        height: 100%
+        float: right
+        &:hover
+          background: #ffa8a8
+          path
+            fill: red 
+  select, input
+    display: block
+    box-sizing: border-box
+    width: 100%
+    padding: 10px
+    border: 1px solid #f0f0f0
+    -moz-appearance: none
+    -webkit-appearance: none
+    border-radius: 0
+    background-image: none
+    transition: border 0.2s cubic-bezier(0.55, 0, 0.1, 1)
+    font-size: 15px
+    font-family: "colfax-web","Roboto","Helvetica Neue",Helvetica,Roboto,Arial,sans-serif
 
-  input, div
-    margin: 0 15px 20px 15px
+  input, div, select
+    margin: 0 15px 7px 15px
     width: calc(100% - 30px)
 
-  input::placeholder
+  input::placeholder, select::placeholder, textarea::placeholder
     color: #c6c6c6
-
-  textarea::placeholder
-    color: #c6c6c6
-
   textarea  
-    margin: 0 15px 20px 15px
+    margin: 0 15px 7px 15px
     width: calc(100% - 30px)
+    min-width: calc(100% - 30px)
+    max-width: calc(100% - 30px)
   p
     margin-top: 10px
     color: #848484
@@ -50,19 +109,19 @@
     path
       fill: #848484;
   .label
-    font-size: 13px
+    font-size: .875rem
     margin-left: 15px
     float: left
     margin-right: 0 
     min-width: 30%
   .apiKey
     float: right
-    font-size: 12px
+    font-size: .75rem
     margin-right: 15px
     font-family: Roboto Mono,Menlo,Bitstream Vera Sans Mono,Consolas,Courier,monospace
+    display: none
   .image-upload
     border: 1px solid #f0f0f0
-    margin-top: 51px
     height: 181px
     justify-content: center
     align-items: center
@@ -127,3 +186,7 @@
     margin-right: 5px
     font-weight: 500
     color: #589ef0
+
+
+
+    
