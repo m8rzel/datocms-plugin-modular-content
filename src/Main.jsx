@@ -86,11 +86,7 @@ export default class Main extends Component {
               </section>
               <select className="default-input" onChange={e => handleInputChange(id, e.target.value, fieldContent.api_key)} value={fieldContent.value}>
                   {fieldContent.validators.map(option => {
-                    if(fieldContent.value === option){
-                      return(<option selected value={option}>{option}</option>)
-                    } else{
-                      return(<option value={option}>{option}</option>)
-                    }
+                    return(<option value={option}>{option}</option>)
                   })
                   }
               </select>
@@ -297,14 +293,15 @@ export default class Main extends Component {
         // console.log("entered")
         const fields = {};
         newFieldArray.map((field) => {
-          // console.log("Field Key", field)
-          fields[field.api_key] = field.field_type === 'links' ? [] : '';
+          console.log("Field Key", field)
+          fields[field.api_key] = field.field_type === 'links' ? [] : (field.value !== '' ? field.value : '');
         });
         newFormattedContent.push({
           model_id: modelID, api_key: contentApiKey, id, name: contentName, fields,
         });
         this.setState({ formattedContent: newFormattedContent }, () => {
-          // console.log("Content", this.state.formattedContent)
+          console.log("Content", this.state.formattedContent)
+          setFieldValueJSON(this.state.formattedContent, this.state.allContent)
         });
       });
       // console.log("Model Click", plugin.itemTypes[modelID].relationships.fields.data)
