@@ -15,7 +15,7 @@ const Root = ({ plugin }) => {
       setState({
         developmentMode: plugin.parameters.global.developmentMode,
         fieldValue: plugin.getFieldValue(plugin.fieldPath),
-        modularBlocks: plugin.parameters.instance.modular_blocks
+        modularBlocks: plugin.parameters.instance.modular_blocks,
       });
     });
 

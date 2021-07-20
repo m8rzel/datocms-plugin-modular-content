@@ -1,7 +1,7 @@
 {
   "name": "datocms-plugin-modular-content",
   "homepage": "https://github.com/YOUR-USER/datocms-plugin-modular-content",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Modular Content in DatoCMS Modular Content",
   "main": "index.js",
   "scripts": {
@@ -66,7 +66,7 @@
     "@babel/register": "^7.0.0-beta.54",
     "babel-eslint": "^8.2.6",
     "babel-loader": "^8.0.0-beta",
-    "css-loader": "^1.0.0",
+    "css-loader": "^1.0.1",
     "eslint": "^5.3.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-airbnb-base": "^13.1.0",
