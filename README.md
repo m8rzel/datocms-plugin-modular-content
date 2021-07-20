@@ -39,7 +39,3 @@ The plugin will be served from [http://localhost:5000/](http://localhost:5000/).
 ## Donate
 
 I know that much of us have wished us this function, so if you´re happy with it, you can donate me via Paypal! Thank you!
-
-```
-yarn publish
-```
