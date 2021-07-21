@@ -48,7 +48,7 @@
         {
           "id": "modular_blocks",
           "label": "Modular Blocks ID",
-          "hint": "Blocks IDs you want to be able to add (separated by ',')",
+          "hint": "Block IDs you want to be able to add (separated by ',')",
           "type": "string",
           "required": true,
           "default": ""
