@@ -1,7 +1,7 @@
 {
   "name": "datocms-plugin-modular-content",
   "homepage": "https://github.com/m8rzel/datocms-plugin-modular-content",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "With this Plugin you can use your Blocks Models in other Blocks. So it´s a Plugin for nested Content. The Content you can use can be set in Field Settings if you´re my the Field Editor.",
   "main": "index.js",
   "scripts": {
