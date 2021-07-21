@@ -275,7 +275,8 @@ export default class Main extends Component {
           const fieldContent = plugin.fields[field.id].attributes;
           console.log("Field", fieldContent)
           return ({
-            field_type: fieldContent.field_type, label: fieldContent.label, 
+            field_type: fieldContent.field_type,
+            label: fieldContent.label, 
             api_key: fieldContent.api_key, 
             value: fieldContent.field_type === 'links' ? [] : (fieldContent.default_value ? fieldContent.default_value : ''), 
             links: fieldContent.field_type === 'links' && fieldContent.validators.items_item_type.item_types,
